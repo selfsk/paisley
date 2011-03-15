@@ -16,7 +16,6 @@ from StringIO import StringIO
 from urllib import urlencode, quote
 from zope.interface import implements
 
-from twisted.internet import reactor
 from twisted.web._newclient import ResponseDone
 from twisted.web import error as tw_error
 from twisted.web.client import Agent
@@ -113,6 +112,11 @@ class CouchDB(object):
             this one by default.
         @type dbName: C{str}
         """
+        try:
+            reactor
+        except NameError:
+            from twisted.internet import reactor
+
         self.client = Agent(reactor)
         self.host = host
         self.port = int(port)
